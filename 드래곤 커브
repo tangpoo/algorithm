@@ -1,0 +1,67 @@
+import java.io.*;
+import java.util.*;
+
+class Main{
+    static boolean[][] map = new boolean[101][101];
+	public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        
+        int n = Integer.parseInt(br.readLine());
+        
+        while(n --> 0) {
+        	st = new StringTokenizer(br.readLine());
+        	
+        	int x = Integer.parseInt(st.nextToken());
+        	int y = Integer.parseInt(st.nextToken());
+        	int d = Integer.parseInt(st.nextToken());
+        	int g = Integer.parseInt(st.nextToken());
+        	
+        	draw(x, y, directions(d, g));
+        }
+        
+        int cnt = 0;
+        for(int i = 0; i < 100; i++) {
+        	for(int j = 0; j < 100; j++) {
+        		if(map[i][j] == true && map[i+1][j] == true && map[i][j+1] == true && map[i+1][j+1] == true) {
+        			cnt++;
+        		}
+        	}
+        }
+        System.out.println(cnt);
+	}
+	
+	static List<Integer> directions(int d, int g){
+		List<Integer> direction = new ArrayList<>();
+		direction.add(d);
+		
+		while(g --> 0) {
+			for(int i = direction.size() - 1; i >= 0; i--) {
+				int dir = (direction.get(i) + 1) % 4;
+				direction.add(dir);
+			}
+		}
+		
+		return direction;
+	}
+	
+	static void draw(int x, int y, List<Integer> dir) {
+		map[x][y] = true;
+		
+		for(int d : dir) {
+			switch (d) {
+			case 0:
+				map[++x][y] = true;
+				break;
+			case 1:
+				map[x][--y] = true;
+				break;
+			case 2:
+				map[--x][y] = true;
+				break;
+			case 3:
+				map[x][++y] = true;
+			}
+		}
+	}
+}
